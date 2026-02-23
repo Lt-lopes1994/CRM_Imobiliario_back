@@ -34,6 +34,7 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.github\copilot-instructions.md
 
 # dotenv environment variable files
 .env
@@ -51,6 +52,9 @@ pids
 *.pid
 *.seed
 *.pid.lock
+
+*.md files
+*.md
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
