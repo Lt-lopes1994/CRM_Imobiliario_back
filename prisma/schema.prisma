@@ -20,6 +20,29 @@ enum PropertyType {
   STUDIO
 }
 
+enum LeadStage {
+  NEW
+  CONTACTED
+  QUALIFIED
+  PROPOSAL
+  WON
+  LOST
+}
+
+enum LeadSource {
+  WEBSITE
+  WHATSAPP
+  INSTAGRAM
+  REFERRAL
+  MANUAL
+}
+
+enum TriageStatus {
+  OPEN
+  QUALIFIED
+  DISQUALIFIED
+}
+
 model User {
   id          String     @id @default(cuid())
   name        String
@@ -30,6 +53,7 @@ model User {
   updatedAt   DateTime   @updatedAt
   properties  Property[]
   messages    Message[]
+  leads       Lead[]
 }
 
 model Category {
@@ -78,4 +102,71 @@ model Message {
 
   user        User?      @relation(fields: [userId], references: [id])
   property    Property   @relation(fields: [propertyId], references: [id])
+}
+
+model Lead {
+  id              String         @id @default(cuid())
+  name            String
+  email           String?
+  phone           String
+  source          LeadSource     @default(MANUAL)
+  stage           LeadStage      @default(NEW)
+  score           Int            @default(0)
+  interestType    PropertyType?
+  budgetMin       Decimal?       @db.Decimal(12, 2)
+  budgetMax       Decimal?       @db.Decimal(12, 2)
+  cityPreference  String?
+  notes           String?
+  ownerId         String?
+  clientId        String?        @unique
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  owner           User?          @relation(fields: [ownerId], references: [id])
+  client          Client?
+  triageSessions  TriageSession[]
+}
+
+model Client {
+  id               String            @id @default(cuid())
+  leadId           String            @unique
+  name             String
+  email            String?
+  phone            String
+  preferredChannel String            @default("whatsapp")
+  tags             String[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  lead             Lead              @relation(fields: [leadId], references: [id])
+  outboundMessages OutboundMessage[]
+}
+
+model OutboundMessage {
+  id          String    @id @default(cuid())
+  clientId    String
+  channel     String
+  content     String
+  status      String    @default("queued")
+  sentAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  client      Client    @relation(fields: [clientId], references: [id])
+}
+
+model TriageSession {
+  id             String        @id @default(cuid())
+  leadId         String
+  status         TriageStatus  @default(OPEN)
+  channel        String        @default("telegram")
+  externalChatId String?
+  currentStep    String        @default("ASK_INTEREST")
+  answers        Json?
+  aiSummary      String?
+  qualification  Int           @default(0)
+  completedAt    DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  lead           Lead          @relation(fields: [leadId], references: [id])
 }
