@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  COMMERCIAL
+  LAND
+  STUDIO
+}
+
+model User {
+  id          String     @id @default(cuid())
+  name        String
+  email       String     @unique
+  password    String
+  role        UserRole   @default(USER)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  properties  Property[]
+  messages    Message[]
+}
+
+model Category {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  properties  Property[]
+}
+
+model Property {
+  id           String       @id @default(cuid())
+  title        String
+  description  String
+  price        Decimal      @db.Decimal(12, 2)
+  bedrooms     Int
+  bathrooms    Int
+  area         Float
+  city         String
+  state        String
+  address      String
+  zipcode      String
+  propertyType PropertyType
+  isPublished  Boolean      @default(true)
+  ownerId      String
+  categoryId   String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  owner        User         @relation(fields: [ownerId], references: [id])
+  category     Category     @relation(fields: [categoryId], references: [id])
+  messages     Message[]
+}
+
+model Message {
+  id          String     @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  content     String
+  isRead      Boolean    @default(false)
+  userId      String?
+  propertyId  String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  user        User?      @relation(fields: [userId], references: [id])
+  property    Property   @relation(fields: [propertyId], references: [id])
+}
