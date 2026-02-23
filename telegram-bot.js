@@ -3,21 +3,22 @@
  *
  * COMO USAR:
  * 1. Crie um bot com @BotFather no Telegram
- * 2. Cole o token na variável TELEGRAM_TOKEN abaixo
- * 3. Instale: npm install node-telegram-bot-api
+ * 2. Cole o token no arquivo .env: TELEGRAM_BOT_TOKEN=seu_token_aqui
+ * 3. Instale: npm install node-telegram-bot-api dotenv
  * 4. Execute: node telegram-bot.js
  * 5. Envie mensagem para seu bot!
  */
 
+require('dotenv').config();
 const TelegramBot = require('node-telegram-bot-api');
 const http = require('http');
 
 // ========== CONFIGURAÇÃO ==========
-// Cole aqui o token que o BotFather deu
-const TELEGRAM_TOKEN = '8694304353:AAH3f5nc8gf14zIigA97_b634wHqS41DHc0';
+// Token do Telegram (vem do arquivo .env)
+const TELEGRAM_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
 // Secret do webhook (mesmo do .env)
-const WEBHOOK_SECRET = 'change-me-n8n-secret';
+const WEBHOOK_SECRET = process.env.N8N_WEBHOOK_SECRET || 'change-me-n8n-secret';
 
 // Porta do backend
 const BACKEND_PORT = 4000;
@@ -34,15 +35,15 @@ const cores = {
 };
 
 // Verifica se o token foi configurado
-if (TELEGRAM_TOKEN === 'COLE_SEU_TOKEN_AQUI') {
+if (!TELEGRAM_TOKEN || TELEGRAM_TOKEN === 'disabled') {
   console.error(
-    `\n${cores.vermelho}❌ ERRO: Configure o TELEGRAM_TOKEN antes de executar!${cores.reset}`,
+    `\n${cores.vermelho}❌ ERRO: Configure o TELEGRAM_BOT_TOKEN no arquivo .env!${cores.reset}`,
   );
   console.log(`\n${cores.amarelo}📋 Passos:${cores.reset}`);
   console.log('   1. Abra o Telegram e procure por @BotFather');
   console.log('   2. Envie: /newbot');
   console.log('   3. Siga as instruções e copie o token');
-  console.log('   4. Cole o token na variável TELEGRAM_TOKEN deste arquivo\n');
+  console.log('   4. Cole o token no arquivo .env: TELEGRAM_BOT_TOKEN=seu_token_aqui\n');
   process.exit(1);
 }
 
