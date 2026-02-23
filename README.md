@@ -33,6 +33,15 @@ Backend em NestJS com arquitetura modular, foco em SOLID e ORM Prisma.
 
 - Subir API + PostgreSQL: `docker compose up --build`
 
+## Deploy no Render
+
+Para deploy sem Docker (Node Web Service), use:
+
+- Build Command: `yarn install --frozen-lockfile && yarn prisma:generate && yarn build`
+- Start Command: `yarn start:prod`
+
+Observação: o entrypoint compilado do Nest fica em `dist/src/main.js`.
+
 ## Qualidade no commit
 
 - Hook de pre-commit via Husky executa `yarn lint-staged`.
