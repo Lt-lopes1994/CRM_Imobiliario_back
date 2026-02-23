@@ -17,6 +17,13 @@
 3. Quando fechar um ciclo, abra PR de `develop` -> `main`.
 4. Hotfixes saem de `main` e voltam para `main` e `develop`.
 
+## Regras de PR (recomendado)
+
+- Proibir push direto em `main` e `develop`.
+- Exigir PR com reviews aprovados.
+- Exigir checks de status passando (workflow `CI`).
+- Exigir branch atualizada com a base antes do merge.
+
 ## Padrao de commits
 
 Use mensagens de commit no estilo Conventional Commits:
