@@ -43,7 +43,9 @@ if (!TELEGRAM_TOKEN || TELEGRAM_TOKEN === 'disabled') {
   console.log('   1. Abra o Telegram e procure por @BotFather');
   console.log('   2. Envie: /newbot');
   console.log('   3. Siga as instruções e copie o token');
-  console.log('   4. Cole o token no arquivo .env: TELEGRAM_BOT_TOKEN=seu_token_aqui\n');
+  console.log(
+    '   4. Cole o token no arquivo .env: TELEGRAM_BOT_TOKEN=seu_token_aqui\n',
+  );
   process.exit(1);
 }
 
