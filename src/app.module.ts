@@ -10,6 +10,10 @@ import { MessagesModule } from './modules/messages/messages.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { HealthModule } from './modules/health/health.module';
 import { PrismaModule } from './infra/prisma/prisma.module';
+import { LeadsModule } from './modules/leads/leads.module';
+import { ClientsModule } from './modules/clients/clients.module';
+import { ChatbotModule } from './modules/chatbot/chatbot.module';
+import { TelegramModule } from './modules/telegram/telegram.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -32,6 +36,10 @@ import { AppService } from './app.service';
     CategoriesModule,
     MessagesModule,
     AdminModule,
+    LeadsModule,
+    ClientsModule,
+    ChatbotModule,
+    TelegramModule,
   ],
   controllers: [AppController],
   providers: [
