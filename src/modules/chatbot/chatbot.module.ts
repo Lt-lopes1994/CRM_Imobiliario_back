@@ -8,5 +8,6 @@ import { ChatbotService } from './chatbot.service';
   imports: [PrismaModule, ConfigModule],
   controllers: [ChatbotController],
   providers: [ChatbotService],
+  exports: [ChatbotService],
 })
 export class ChatbotModule {}
