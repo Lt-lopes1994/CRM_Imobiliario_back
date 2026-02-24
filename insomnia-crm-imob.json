@@ -1,0 +1,337 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-02-24T14:00:00.000Z",
+  "__export_source": "gpt-5.3-codex",
+  "resources": [
+    {
+      "_id": "wrk_crm_imob",
+      "_type": "workspace",
+      "name": "CRM Imobiliário Backend",
+      "description": "Coleção para testes locais do backend NestJS",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_crm_imob_base",
+      "_type": "environment",
+      "parentId": "wrk_crm_imob",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:4000",
+        "token": "",
+        "lead_id": "",
+        "client_id": "",
+        "webhook_secret": "change-me-n8n-secret"
+      }
+    },
+
+    {
+      "_id": "fld_health",
+      "_type": "request_group",
+      "parentId": "wrk_crm_imob",
+      "name": "Health"
+    },
+    {
+      "_id": "req_health_check",
+      "_type": "request",
+      "parentId": "fld_health",
+      "name": "GET Health",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/health",
+      "parameters": [],
+      "headers": [],
+      "body": {}
+    },
+
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_crm_imob",
+      "name": "Auth"
+    },
+    {
+      "_id": "req_auth_register",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "POST Register",
+      "method": "POST",
+      "url": "{{ _.base_url }}/v1/auth/register",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Administrador\",\n  \"email\": \"admin@crmimob.com\",\n  \"password\": \"Admin@123456\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "POST Login",
+      "method": "POST",
+      "url": "{{ _.base_url }}/v1/auth/login",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"admin@crmimob.com\",\n  \"password\": \"Admin@123456\"\n}"
+      }
+    },
+    {
+      "_id": "req_auth_profile",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "GET Profile",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/auth/profile",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    },
+
+    {
+      "_id": "fld_leads",
+      "_type": "request_group",
+      "parentId": "wrk_crm_imob",
+      "name": "Leads"
+    },
+    {
+      "_id": "req_leads_create",
+      "_type": "request",
+      "parentId": "fld_leads",
+      "name": "POST Create Lead",
+      "method": "POST",
+      "url": "{{ _.base_url }}/v1/leads",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Lead Teste\",\n  \"email\": \"lead@teste.com\",\n  \"phone\": \"11999998888\",\n  \"source\": \"MANUAL\",\n  \"interestType\": \"APARTMENT\",\n  \"budgetMin\": 250000,\n  \"budgetMax\": 500000,\n  \"cityPreference\": \"São Paulo\",\n  \"notes\": \"Contato vindo da campanha\"\n}"
+      }
+    },
+    {
+      "_id": "req_leads_list",
+      "_type": "request",
+      "parentId": "fld_leads",
+      "name": "GET List Leads",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/leads",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_leads_kanban",
+      "_type": "request",
+      "parentId": "fld_leads",
+      "name": "GET Leads Kanban",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/leads/kanban",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_leads_update_stage",
+      "_type": "request",
+      "parentId": "fld_leads",
+      "name": "PATCH Lead Stage",
+      "method": "PATCH",
+      "url": "{{ _.base_url }}/v1/leads/{{ _.lead_id }}/stage",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"stage\": \"QUALIFIED\"\n}"
+      }
+    },
+    {
+      "_id": "req_leads_triage",
+      "_type": "request",
+      "parentId": "fld_leads",
+      "name": "POST Lead Triage",
+      "method": "POST",
+      "url": "{{ _.base_url }}/v1/leads/{{ _.lead_id }}/triage",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"interestType\": \"APARTMENT\",\n  \"budget\": 500000,\n  \"cityPreference\": \"São Paulo\",\n  \"financingApproved\": true,\n  \"urgency\": 4,\n  \"summary\": \"Cliente pronto para visita\"\n}"
+      }
+    },
+
+    {
+      "_id": "fld_clients",
+      "_type": "request_group",
+      "parentId": "wrk_crm_imob",
+      "name": "Clients"
+    },
+    {
+      "_id": "req_clients_from_lead",
+      "_type": "request",
+      "parentId": "fld_clients",
+      "name": "POST Create Client From Lead",
+      "method": "POST",
+      "url": "{{ _.base_url }}/v1/clients/from-lead/{{ _.lead_id }}",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"preferredChannel\": \"whatsapp\",\n  \"tags\": [\"alto-valor\", \"pronto-compra\"]\n}"
+      }
+    },
+    {
+      "_id": "req_clients_list",
+      "_type": "request",
+      "parentId": "fld_clients",
+      "name": "GET List Clients",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/clients",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_clients_send_message",
+      "_type": "request",
+      "parentId": "fld_clients",
+      "name": "POST Send Outbound Message",
+      "method": "POST",
+      "url": "{{ _.base_url }}/v1/clients/{{ _.client_id }}/messages",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"channel\": \"whatsapp\",\n  \"content\": \"Olá! Temos novas opções de imóveis para você.\"\n}"
+      }
+    },
+
+    {
+      "_id": "fld_admin",
+      "_type": "request_group",
+      "parentId": "wrk_crm_imob",
+      "name": "Admin"
+    },
+    {
+      "_id": "req_admin_overview",
+      "_type": "request",
+      "parentId": "fld_admin",
+      "name": "GET Metrics Overview",
+      "method": "GET",
+      "url": "{{ _.base_url }}/v1/admin/metrics/overview",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    },
+
+    {
+      "_id": "fld_chatbot",
+      "_type": "request_group",
+      "parentId": "wrk_crm_imob",
+      "name": "Chatbot"
+    },
+    {
+      "_id": "req_chatbot_webhook",
+      "_type": "request",
+      "parentId": "fld_chatbot",
+      "name": "POST n8n Webhook",
+      "method": "POST",
+      "url": "{{ _.base_url }}/v1/chatbot/n8n/webhook",
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "x-webhook-secret",
+          "value": "{{ _.webhook_secret }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"chatId\": \"telegram-123\",\n  \"message\": \"Quero comprar apartamento\",\n  \"name\": \"Cliente Telegram\",\n  \"phone\": \"11988887777\",\n  \"channel\": \"TELEGRAM\"\n}"
+      }
+    }
+  ]
+}
